@@ -1,5 +1,6 @@
 package de.zorcic.article.boundary;
 
+import de.zorcic.article.dao.ArticleRepository;
 import de.zorcic.article.entity.Article;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -21,26 +22,26 @@ import javax.ws.rs.core.Response;
 public class ArticleResource {
 
     @Inject
-    ArticleService articleService;
+    ArticleRepository articleRepository;
 
     @PUT
     @Path("{articleNumber}")
     public Response editOrCreateArticle(@PathParam("articleNumber") String articleNumber) {
-        articleService.editOrCreateArticle(articleNumber);
+        articleRepository.editOrCreateArticle(articleNumber);
         return Response.noContent().build();
     }
 
     @GET
     @Path("{articleNumber}")
     public Response byArticleNumber(@PathParam("articleNumber") String articleNumber) {
-        Article a = articleService.findByArticleNumber(articleNumber);
+        Article a = articleRepository.findByArticleNumber(articleNumber);
         return Response.ok(a.toJson()).build();
     }
 
     @GET
     public Response allArticles() {
         JsonArrayBuilder result = Json.createArrayBuilder();
-        articleService.allArticles().forEach(article -> result.add(article.toJson()));
+        articleRepository.findAll().forEach(article -> result.add(article.toJson()));
         return Response.ok(result.build()).build();
     }
 
