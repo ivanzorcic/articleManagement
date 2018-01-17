@@ -18,4 +18,8 @@ public class ArticleService {
         return em.createNamedQuery(Article.findAll, Article.class).getResultList();
     }
 
+    public Article findByArticleNumber(String articleNumber) {
+        return em.createNamedQuery(Article.findByArticleNumber, Article.class).setParameter("articleNumber", articleNumber).getSingleResult();
+    }
+
 }
